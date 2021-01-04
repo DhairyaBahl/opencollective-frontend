@@ -986,6 +986,7 @@ input CollectiveCreateInput {
   tags: [String]
   githubHandle: String
   settings: JSON
+  data: JSON
 }
 
 """
@@ -4892,6 +4893,11 @@ type Mutation {
     host: AccountReferenceInput
 
     """
+    User information to create along with the collective
+    """
+    user: UserCreateInput
+
+    """
     Wether to trigger the automated approval for Open Source collectives with GitHub.
     """
     automateApprovalWithGithub: Boolean = false
@@ -7084,3 +7090,8 @@ type UpdateCollection implements Collection {
 A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
 """
 scalar URL
+
+input UserCreateInput {
+  name: String!
+  email: String!
+}
