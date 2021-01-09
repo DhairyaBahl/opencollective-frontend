@@ -986,7 +986,6 @@ input CollectiveCreateInput {
   tags: [String]
   githubHandle: String
   settings: JSON
-  data: JSON
 }
 
 """
@@ -4696,6 +4695,11 @@ type Individual implements Account {
   hasTwoFactorAuth: Boolean
 }
 
+input IndividualCreateInput {
+  name: String!
+  email: String!
+}
+
 """
 ISO-8601 date
 """
@@ -4895,7 +4899,7 @@ type Mutation {
     """
     User information to create along with the collective
     """
-    user: UserCreateInput
+    user: IndividualCreateInput
 
     """
     Wether to trigger the automated approval for Open Source collectives with GitHub.
@@ -4906,6 +4910,11 @@ type Mutation {
     A message to attach for the host to review the application
     """
     message: String
+
+    """
+    Further information about collective applying to host
+    """
+    applicationData: JSON
   ): Collective
   createFund(
     """
@@ -7090,8 +7099,3 @@ type UpdateCollection implements Collection {
 A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
 """
 scalar URL
-
-input UserCreateInput {
-  name: String!
-  email: String!
-}
