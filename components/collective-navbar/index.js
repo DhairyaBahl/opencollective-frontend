@@ -317,7 +317,7 @@ const getDefaultCallsToActions = (collective, isAdmin, newNavbarFeatureFlag) => 
  * This code could be factorized with `ActionsMenu.js`, as we want to have the same icons/actions/labels
  * here and there.
  */
-const getMainAction = (collective, isAdmin, callsToAction) => {
+export const getMainAction = (collective, isAdmin, callsToAction) => {
   if (!collective || !callsToAction) {
     return null;
   }
@@ -410,7 +410,7 @@ const getMainAction = (collective, isAdmin, callsToAction) => {
   }
 };
 
-const MainActionBtn = styled(StyledButton).attrs({ buttonSize: 'tiny' })`
+export const MainActionBtn = styled(StyledButton).attrs({ buttonSize: 'tiny' })`
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
@@ -563,7 +563,7 @@ const CollectiveNavbar = ({
             )}
           </CategoriesContainer>
 
-          {/* CTAs for v2 navbar & admin panel */}
+          {/* CTAs for v2 navbar */}
           <Container
             display={isExpanded ? 'flex' : ['none', 'flex']}
             flexDirection={['column', 'row']}

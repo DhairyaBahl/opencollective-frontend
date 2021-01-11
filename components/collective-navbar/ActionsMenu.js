@@ -26,6 +26,7 @@ import StyledLink from '../StyledLink';
 import { Span } from '../Text';
 
 import { NAVBAR_ACTION_TYPE } from './menu';
+import { MainActionBtn } from './index';
 
 // Dynamic imports
 const AddPrepaidBudgetModal = dynamic(() => import('../AddPrepaidBudgetModal'));
@@ -137,6 +138,8 @@ const CollectiveNavbarActionsMenu = ({ collective, callsToAction, hiddenActionFo
     [CollectiveType.FUND].includes(collective.type) || collective.settings?.fundingRequest === true;
   const enabledCTAs = Object.keys(pickBy(callsToAction, Boolean));
   const isEmpty = !hasRequestGrant && enabledCTAs.length < 1;
+  const hasOnlyTwoCTAs =
+    (enabledCTAs.length === 1 && hasRequestGrant) || (enabledCTAs.length === 2 && !hasRequestGrant);
   const hasOnlyOneHiddenCTA = enabledCTAs.length === 1 && hiddenActionForNonMobile === enabledCTAs[0];
   const hostedCollectivesLimit = get(collective, 'plan.hostedCollectivesLimit');
   const hostWithinLimit = hostedCollectivesLimit
@@ -146,9 +149,39 @@ const CollectiveNavbarActionsMenu = ({ collective, callsToAction, hiddenActionFo
   const [hasAddPrepaidBudgetModal, showAddPrepaidBudgetModal] = React.useState(false);
   const contributeRoute = getContributeRoute(collective);
 
+  // callsToAction = {
+  //   addFunds: false,
+  //   addPrepaidBudget: false,
+  //   hasApply: false,
+  //   hasContact: true,
+  //   hasContribute: false,
+  //   hasDashboard: false,
+  //   hasManageSubscriptions: false,
+  //   hasSubmitExpense: true,
+  // };
+
+  // console.log('enabledCTAs', enabledCTAs);
+  // console.log('hasRequestGrant', hasRequestGrant);
+  // console.log('hasOnlyTwoCTAs', hasOnlyTwoCTAs);
+
   // Do not render the menu if there are no available CTAs
   if (isEmpty) {
     return null;
+  }
+
+  if (hasOnlyTwoCTAs) {
+    return (
+      <Container display={['none', 'flex']} alignItems="center" mx={1}>
+        <Link route="host.dashboard" params={{ hostCollectiveSlug: collective.slug }}>
+          <MainActionBtn tabIndex="-1">
+            <Dashboard size="14px" />
+            <Span ml={2}>
+              <FormattedMessage id="host.dashboard" defaultMessage="Dashboard" />
+            </Span>
+          </MainActionBtn>
+        </Link>
+      </Container>
+    );
   }
 
   return (
